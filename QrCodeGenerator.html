@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>QR Code Generator</title>
+    <!-- <link rel="website icon" href="background.jpg" > -->
+    <style>
+        /* Define styles for mobile screens */
+        @media (max-width: 768px) {
+            body {
+                background-size: cover;
+            }
+
+            .container {
+                width: 90%;
+                padding: 10px;
+            }
+
+            input[type="text"] {
+                width: 100%;
+            }
+
+            #qrcode-container {
+                margin-top: 10px;
+            }
+
+            #qrcode-image {
+                width: 100%;
+            }
+        }
+
+        /* Define styles for tablet and larger screens */
+        @media (min-width: 769px) {
+            body {
+                background-size: cover;
+            }
+
+            .container {
+                width: 50%;
+                padding: 20px;
+            }
+
+            input[type="text"] {
+                width: 90%;
+            }
+
+            #qrcode-container {
+                margin-top: 20px;
+            }
+
+            #qrcode-image {
+                width: 100%;
+            }
+        }
+
+        body {
+            background: linear-gradient(to left, #e91818, #578eb6, #31bdeb, #fa2424);
+            background-size: cover;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            font-family: Arial, sans-serif;
+            position: relative;
+        }
+        
+        body::before {
+            content: "";
+            background-image: inherit;
+            background-size: inherit;
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            filter: blur(10px);
+            z-index: -1;
+        }
+
+        .container {
+            background-color: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(5px);
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            color: #007BFF;
+        }
+
+        input[type="text"] {
+            width: 90%;
+            padding: 10px;
+            margin-bottom: 10px;
+        }
+
+        button {
+            background-color: #007BFF;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        #qrcode-container {
+            margin-top: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            /* Center both horizontally and vertically */
+        }
+
+        #qrcode-image {
+            display: none;
+            /* Center the QR code image */
+            justify-content: center;
+            /* Center horizontally within the container */
+        }
+
+
+        /* Added styles for the download link */
+        #downloadLink {
+            display: none;
+            background-color: #007BFF;
+            color: #fff;
+            text-decoration: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            margin-top: 10px;
+            transition: background-color 0.3s;
+        }
+
+        #downloadLink:hover {
+            background-color: #0056b3;
+        }
+
+        /* Added footer with developer name */
+        .footer {
+            position: absolute;
+            bottom: 10px;
+            left: 0;
+            right: 0;
+            text-align: center;
+            color: #333;
+        }
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/qrious"></script>
+</head>
+
+<body>
+    <div class="container">
+        <h1>QR Code Generator</h1>
+        <label for="text">Enter the information:</label>
+        <input type="text" id="text">
+        <button onclick="generateQRCode()">Generate QR Code</button>
+
+        <div id="qrcode-container" style="display: none;">
+            <img id="qrcode-image" src="" alt="QR Code">
+            <a id="downloadLink" style="display: none;" download="qrcode.png">Download QR Code</a>
+        </div>
+    </div>
+
+    <!-- Added footer with developer name -->
+    <div class="footer">
+        Developed by MUHAMMAD WASIM (13257)
+    </div>
+
+    <script>
+
+        let docTitle = document.title;
+
+        window.addEventListener("blur", () => {
+            document.title = "Come Back ❤";
+        });
+
+        window.addEventListener("focus", () => {
+            document.title = docTitle;
+        });
+
+
+        function generateQRCode() {
+            var text = document.getElementById("text").value;
+
+
+            // Check if the text is empty
+            if (text.trim() === "") {
+                alert("Please enter some information before generating the QR code.");
+                return; // Exit the function if the text is empty
+            }
+
+            var qrcodeImage = document.getElementById("qrcode-image");
+            qrcodeImage.style.display = "none";
+
+            var qr = new QRious({
+                element: qrcodeImage,
+                value: text,
+                size: 256
+            });
+
+            var qrcodeContainer = document.getElementById("qrcode-container");
+            var downloadLink = document.getElementById("downloadLink");
+
+            qrcodeImage.style.display = "block";
+            downloadLink.href = qr.toDataURL("image/png");
+            downloadLink.style.display = "block";
+            downloadLink.download = "qrcode.png";
+            qrcodeContainer.style.display = "block";
+            qrcodeContainer.style.paddingLeft = "25%";
+            qrcodeContainer.style.paddingRight = "25%";
+
+            // Clear the input field and set a placeholder
+            var inputField = document.getElementById("text");
+            inputField.value = "";
+            inputField.placeholder = "Enter the information for next QR code generating";
+        }
+    </script>
+</body>
+
+</html>
